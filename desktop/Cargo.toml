@@ -1,0 +1,20 @@
+[package]
+name = "rust-reps"
+version.workspace = true
+edition.workspace = true
+build = "build.rs"
+
+[lib]
+name = "rust_reps_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+reps-core = { path = "../core" }
+tauri = { version = "2", features = [] }

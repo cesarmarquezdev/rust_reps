@@ -1,0 +1,871 @@
+{
+ "cards": [
+  {
+   "id": "vec-get-fuera",
+   "topic": "Vec · índices",
+   "question": "¿Qué devuelve get(5)?",
+   "code": "let stock = vec![8, 12, 3];\nlet cantidad = stock.get(5);",
+   "teaser": "¿Y si el índice no existe?",
+   "explanation": "get devuelve None cuando el índice está fuera de rango. Es la diferencia con stock[5], que sí entra en pánico.",
+   "kind": "choice",
+   "options": [
+    "Some(&3)",
+    "None",
+    "El programa entra en pánico"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "vec-get-copied",
+   "topic": "Option · valores",
+   "question": "¿Qué imprime este código?",
+   "code": "let stock = vec![8, 12, 3];\nlet cantidad = stock.get(1).copied().unwrap_or(0);\nprintln!(\"{cantidad}\");",
+   "teaser": "¿Cuánto stock queda?",
+   "explanation": "El índice 1 es el segundo elemento. copied convierte Option<&i32> en Option<i32> y unwrap_or(0) da un valor por defecto si hubiera None.",
+   "kind": "choice",
+   "options": [
+    "12",
+    "0",
+    "8"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "ref-mut",
+   "topic": "Referencias · &mut",
+   "question": "¿Qué imprime este código?",
+   "code": "let mut stock = 5;\nlet cantidad = &mut stock;\n*cantidad += 2;\nprintln!(\"{stock}\");",
+   "teaser": "¿Cambió el valor original?",
+   "explanation": "El asterisco te permite modificar el valor al que apunta la referencia mutable. Como cantidad apunta a stock, stock queda en 7.",
+   "kind": "choice",
+   "options": [
+    "Error de compilación",
+    "5",
+    "7"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "vec-mut",
+   "topic": "Vec · mutabilidad",
+   "question": "¿Por qué falla al compilar?",
+   "code": "let stock = vec![8, 12];\nstock.push(3);",
+   "teaser": "¿Puedes agregar un producto?",
+   "explanation": "push modifica el vector y necesita acceso mutable: E0596. Declara let mut stock.",
+   "kind": "choice",
+   "options": [
+    "El vector debe declararse con let mut.",
+    "El número 3 necesita un tipo explícito.",
+    "push solo acepta referencias."
+   ],
+   "answer": 0
+  },
+  {
+   "id": "ref-fill",
+   "topic": "Referencias · &mut",
+   "question": "Completa para sumar 2 al stock a través de la referencia.",
+   "code": "let mut stock = 5;\nlet cantidad = &___ stock;\n___cantidad += 2;",
+   "teaser": "¿Cómo se toca lo que apunta una referencia?",
+   "explanation": "&mut presta el valor con permiso de escritura y * llega al valor apuntado. Sin el *, cantidad += 2 intentaría sumar a la referencia misma (E0368).",
+   "kind": "fill",
+   "bank": [
+    "ref",
+    "&",
+    "*",
+    "mut"
+   ],
+   "blanks": [
+    "mut",
+    "*"
+   ]
+  },
+  {
+   "id": "cargo-check",
+   "topic": "Cargo · compilar",
+   "question": "¿Qué hace cargo check?",
+   "code": "",
+   "teaser": "¿Compilar o solo comprobar?",
+   "explanation": "check es la versión rápida de build: pasa el compilador por tu código sin producir binario. Úsalo mientras escribes; build deja el ejecutable en target/debug/.",
+   "kind": "choice",
+   "options": [
+    "Compila en modo release y lo ejecuta",
+    "Corre todos los tests del proyecto",
+    "Verifica que el código compila, sin generar el ejecutable"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "var-e0384",
+   "topic": "Variables · mutabilidad",
+   "question": "¿Qué pasa al compilar este código?",
+   "code": "let x = 5;\nx = 6;\nprintln!(\"{x}\");",
+   "teaser": "¿Se puede reasignar x?",
+   "explanation": "Por defecto las variables son inmutables: si no dice mut, el compilador garantiza que no cambia. Para cambiarla: let mut x = 5;",
+   "kind": "choice",
+   "options": [
+    "Error E0308: tipos incompatibles",
+    "Error E0384: asignar dos veces a una variable inmutable",
+    "Imprime 6"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "shadow-tipo",
+   "topic": "Variables · shadowing",
+   "question": "¿Qué imprime este código?",
+   "code": "let espacios = \"   \";\nlet espacios = espacios.len();\nprintln!(\"{espacios}\");",
+   "teaser": "¿Y si repito el nombre?",
+   "explanation": "let crea una variable NUEVA que tapa a la anterior (shadowing), por eso puede cambiar de tipo: de &str a usize. Con let mut esto daría E0308.",
+   "kind": "choice",
+   "options": [
+    "3",
+    "No compila: cambia el tipo",
+    "\"   \""
+   ],
+   "answer": 0
+  },
+  {
+   "id": "shadow-scope",
+   "topic": "Variables · shadowing",
+   "question": "¿Qué imprimen los dos println!?",
+   "code": "let x = 5;\nlet x = x + 1;\n{\n    let x = x * 2;\n    println!(\"{x}\");\n}\nprintln!(\"{x}\");",
+   "teaser": "¿Quién gana dentro de las llaves?",
+   "explanation": "x vale 6 tras el segundo let. Dentro del bloque nace otra x = 12 que muere al cerrar la llave, así que fuera vuelve a verse 6.",
+   "kind": "choice",
+   "options": [
+    "12 y 12",
+    "12 y 6",
+    "10 y 6"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "fn-main-order",
+   "topic": "Funciones · expresiones",
+   "question": "Ordena el programa: entra main, calcula y luego imprime.",
+   "code": "",
+   "teaser": "Ordena tu primer programa",
+   "explanation": "Un programa Rust arranca en fn main. Las sentencias se ejecutan de arriba abajo y la llave final cierra el bloque.",
+   "kind": "order",
+   "lines": [
+    "    println!(\"{doble}\");",
+    "fn main() {",
+    "}",
+    "    let doble = 2 * 21;"
+   ],
+   "solution": [
+    1,
+    3,
+    0,
+    2
+   ]
+  },
+  {
+   "id": "const-tipo",
+   "topic": "Variables · const",
+   "question": "Una const siempre lleva tipo explícito. Complétala.",
+   "code": "const MAX_PUNTOS: ___ = 100_000;",
+   "teaser": "¿Y las constantes?",
+   "explanation": "const lleva SIEMPRE el tipo, va en MAYÚSCULAS y su valor se conoce al compilar. No existe const mut. En Python las constantes son convención; en Rust, ley.",
+   "kind": "fill",
+   "bank": [
+    "let",
+    "mut",
+    "u32",
+    "fn"
+   ],
+   "blanks": [
+    "u32"
+   ]
+  },
+  {
+   "id": "tipos-div",
+   "topic": "Tipos · enteros",
+   "question": "¿Cuánto vale esta división entera?",
+   "code": "println!(\"{}\", -7 / 2);",
+   "teaser": "¿Redondea hacia abajo?",
+   "explanation": "La división entera trunca hacia cero, no hacia abajo: -7 / 2 = -3. Para decimales necesitas f64: 7.0 / 2.0 = 3.5.",
+   "kind": "choice",
+   "options": [
+    "-3.5",
+    "-4",
+    "-3"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "tipos-as",
+   "topic": "Tipos · enteros",
+   "question": "¿Qué imprime este cast?",
+   "code": "let n = 300_i32 as u8;\nprintln!(\"{n}\");",
+   "teaser": "¿as avisa si pierdes datos?",
+   "explanation": "as no avisa: se queda con los 8 bits bajos. 300 = 256 + 44, así que queda 44. Cada as en código de IA merece una mirada; try_from es la alternativa segura.",
+   "kind": "choice",
+   "options": [
+    "44",
+    "No compila",
+    "255"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "overflow-const",
+   "topic": "Tipos · overflow",
+   "question": "¿Qué pasa al compilar?",
+   "code": "let x: u8 = 255;\nlet y = x + 1;",
+   "teaser": "¿Y si me paso del máximo?",
+   "explanation": "u8 llega hasta 255. Como los valores son constantes conocidas, el lint arithmetic_overflow lo rechaza al compilar. Si el valor llegara en ejecución: panic en debug y envoltura (wrap) en release.",
+   "kind": "choice",
+   "options": [
+    "y vale 0",
+    "y vale 256",
+    "No compila: el compilador detecta el overflow"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "checked",
+   "topic": "Tipos · overflow",
+   "question": "¿Qué imprime?",
+   "code": "println!(\"{:?}\", 250u8.checked_add(10));",
+   "teaser": "¿Sumar sin miedo al overflow?",
+   "explanation": "checked_add devuelve Option: None si desborda. 250 + 10 = 260 no cabe en u8. wrapping_add daría 4 y saturating_add, 255.",
+   "kind": "choice",
+   "options": [
+    "Some(4)",
+    "None",
+    "Some(260)"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "sat-add",
+   "topic": "Tipos · overflow",
+   "question": "Completa para que imprima 255 en vez de desbordar.",
+   "code": "let a: u8 = 200;\nprintln!(\"{}\", a.___(100));",
+   "teaser": "¿Y si quiero quedarme en el tope?",
+   "explanation": "saturating_add se queda en el máximo (255). wrapping_add envolvería a 44 y checked_add devolvería un Option que ni siquiera se puede imprimir con {}.",
+   "kind": "fill",
+   "bank": [
+    "add",
+    "checked_add",
+    "saturating_add",
+    "wrapping_add"
+   ],
+   "blanks": [
+    "saturating_add"
+   ]
+  },
+  {
+   "id": "unit-display",
+   "topic": "Funciones · expresiones",
+   "question": "¿Qué ocurre al compilar?",
+   "code": "fn saluda() {\n    println!(\"hola\");\n}\n\nfn main() {\n    println!(\"{}\", saluda());\n}",
+   "teaser": "¿Qué devuelve una función sin flecha?",
+   "explanation": "Una función sin -> devuelve () (unit), el valor \"nada\". () no se puede mostrar con {}; con {:?} sí imprimiría ().",
+   "kind": "choice",
+   "options": [
+    "Imprime hola y una línea vacía",
+    "Imprime hola y después ()",
+    "Error E0277: () no implementa Display"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "punto-y-coma",
+   "topic": "Funciones · expresiones",
+   "question": "¿Por qué no compila?",
+   "code": "fn mas_uno(x: i32) -> i32 {\n    x + 1;\n}",
+   "teaser": "¿Un punto y coma cambia el tipo?",
+   "explanation": "Una expresión sin ; es el valor del bloque; con ; pasa a ser sentencia y el bloque vale (). El compilador lo dice: E0308, esperaba i32 y encontró (), y sugiere \"remove this semicolon\".",
+   "kind": "choice",
+   "options": [
+    "El ; convierte x + 1 en sentencia y la función devuelve ()",
+    "x + 1 no es un i32",
+    "Falta la palabra return"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "bloque-valor",
+   "topic": "Funciones · expresiones",
+   "question": "¿Cuánto vale y?",
+   "code": "let y = {\n    let x = 3;\n    x + 1\n};\nprintln!(\"{y}\");",
+   "teaser": "¿Un bloque puede valer algo?",
+   "explanation": "Un bloque {} es una expresión y vale su última línea cuando no lleva ;.",
+   "kind": "choice",
+   "options": [
+    "No compila",
+    "4",
+    "3"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "fn-firma",
+   "topic": "Funciones · expresiones",
+   "question": "Completa la firma: el parámetro lleva tipo y el retorno va tras una flecha.",
+   "code": "fn doble(x: ___) ___ i32 {\n    x * 2\n}",
+   "teaser": "¿Cómo se escribe el contrato?",
+   "explanation": "La firma es un contrato: tipo en cada parámetro (aquí no hay inferencia) y -> Tipo para el retorno. Sin flecha, la función devuelve ().",
+   "kind": "fill",
+   "bank": [
+    "=>",
+    "u32",
+    "->",
+    "i32"
+   ],
+   "blanks": [
+    "i32",
+    "->"
+   ]
+  },
+  {
+   "id": "println-macro",
+   "topic": "Funciones · expresiones",
+   "question": "¿Qué error da este código?",
+   "code": "fn main() {\n    println(\"hola\");\n}",
+   "teaser": "¿Por qué println! lleva un signo?",
+   "explanation": "El ! indica que println! es una macro, no una función. Sin él, el compilador espera una función y encuentra una macro (E0423).",
+   "kind": "choice",
+   "options": [
+    "Error E0423: println es una macro y necesita !",
+    "Error: falta el punto y coma",
+    "Compila e imprime hola"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "if-bool",
+   "topic": "Control de flujo",
+   "question": "¿Qué pasa al compilar?",
+   "code": "if 1 {\n    println!(\"hola\");\n}",
+   "teaser": "¿Un 1 cuenta como verdadero?",
+   "explanation": "Rust no tiene \"truthiness\": if exige un bool (E0308). En Python if lista: vale; en Rust escribes if !lista.is_empty().",
+   "kind": "choice",
+   "options": [
+    "Imprime hola solo si el número no es 0",
+    "Imprime hola",
+    "Error: la condición debe ser bool"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "if-tipos",
+   "topic": "Control de flujo",
+   "question": "¿Compila este if usado como expresión?",
+   "code": "let x = if true { 1 } else { 2.0 };",
+   "teaser": "¿Puede un if devolver valores?",
+   "explanation": "if es una expresión y x necesita un solo tipo: una rama da entero y la otra flotante (E0308, incompatible types). Es el ternario de Python.",
+   "kind": "choice",
+   "options": [
+    "Sí, x vale 1",
+    "No: las dos ramas deben tener el mismo tipo",
+    "Sí, x vale 2.0"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "loop-fill",
+   "topic": "Control de flujo",
+   "question": "Completa para que el bucle termine devolviendo c * 2.",
+   "code": "let mut c = 0;\nlet r = ___ {\n    c += 1;\n    if c == 10 { ___ c * 2; }\n};",
+   "teaser": "¿Un bucle que devuelve un valor?",
+   "explanation": "loop repite sin fin y break valor devuelve un valor: solo loop lo permite, porque garantiza que sales por break. Aquí r vale 20.",
+   "kind": "fill",
+   "bank": [
+    "while",
+    "continue",
+    "loop",
+    "break"
+   ],
+   "blanks": [
+    "loop",
+    "break"
+   ]
+  },
+  {
+   "id": "loop-valor",
+   "topic": "Control de flujo",
+   "question": "¿Cuánto vale r?",
+   "code": "let mut c = 0;\nlet r = loop {\n    c += 3;\n    if c > 10 {\n        break c;\n    }\n};\nprintln!(\"{r}\");",
+   "teaser": "¿Cuándo se detiene?",
+   "explanation": "c recorre 3, 6, 9, 12; en 12 supera a 10 y break c devuelve 12.",
+   "kind": "choice",
+   "options": [
+    "12",
+    "10",
+    "11"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "rango-fill",
+   "topic": "Control de flujo",
+   "question": "Completa para que imprima: 4 3 2 1",
+   "code": "for n in (1___4).rev() {\n    print!(\"{n} \");\n}",
+   "teaser": "¿Se incluye el final del rango?",
+   "explanation": "1..4 excluye el final (1, 2, 3) y 1..=4 lo incluye (1, 2, 3, 4). rev() invierte el orden. Analogía: el tren para antes del andén final con .., y entra con ..=",
+   "kind": "fill",
+   "bank": [
+    "...",
+    "..=",
+    "=..",
+    ".."
+   ],
+   "blanks": [
+    "..="
+   ]
+  },
+  {
+   "id": "continue",
+   "topic": "Control de flujo",
+   "question": "¿Cuánto vale s?",
+   "code": "let mut s = 0;\nfor i in 1..=4 {\n    if i % 2 == 0 {\n        continue;\n    }\n    s += i;\n}\nprintln!(\"{s}\");",
+   "teaser": "¿Qué se salta continue?",
+   "explanation": "continue salta a la siguiente vuelta: los pares (2 y 4) no se suman. Solo se suman 1 y 3, así que s = 4.",
+   "kind": "choice",
+   "options": [
+    "10",
+    "4",
+    "6"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "loop-order",
+   "topic": "Control de flujo",
+   "question": "Ordena el contador: incrementa antes de comprobar y sal con break.",
+   "code": "",
+   "teaser": "Ordena el bucle",
+   "explanation": "Declaras el contador mutable, abres el loop, incrementas y compruebas la salida. En cada vuelta c sube hasta llegar a 3.",
+   "kind": "order",
+   "lines": [
+    "    c += 1;",
+    "}",
+    "let mut c = 0;",
+    "loop {",
+    "    if c == 3 { break; }"
+   ],
+   "solution": [
+    2,
+    3,
+    0,
+    4,
+    1
+   ]
+  },
+  {
+   "id": "match-orden",
+   "topic": "Control de flujo · match",
+   "question": "Con i = 15, ¿qué devuelve f?",
+   "code": "fn f(i: u32) -> &'static str {\n    match (i % 3, i % 5) {\n        (0, _) => \"Fizz\",\n        (_, 0) => \"Buzz\",\n        (0, 0) => \"FizzBuzz\",\n        _ => \"-\",\n    }\n}",
+   "teaser": "¿Qué brazo gana primero?",
+   "explanation": "match ejecuta el primer brazo que encaja. 15 % 3 = 0, así que (0, _) gana y (0, 0) queda inalcanzable (el compilador avisa). Los casos más específicos van primero.",
+   "kind": "choice",
+   "options": [
+    "\"Buzz\"",
+    "\"FizzBuzz\"",
+    "\"Fizz\""
+   ],
+   "answer": 2
+  },
+  {
+   "id": "ordering-fill",
+   "topic": "Control de flujo · match",
+   "question": "Completa el match sobre Ordering.",
+   "code": "match n.___(&secreto) {\n    Ordering::Less => println!(\"Muy bajo\"),\n    Ordering::Greater => println!(\"Muy alto\"),\n    Ordering::___ => println!(\"¡Ganaste!\"),\n}",
+   "teaser": "¿Cómo se compara en Rust?",
+   "explanation": "cmp devuelve un Ordering con tres variantes: Less, Greater y Equal. match te obliga a cubrir las tres.",
+   "kind": "fill",
+   "bank": [
+    "Same",
+    "cmp",
+    "eq",
+    "Equal"
+   ],
+   "blanks": [
+    "cmp",
+    "Equal"
+   ]
+  },
+  {
+   "id": "trim-parse",
+   "topic": "Entrada y errores",
+   "question": "¿Qué imprime?",
+   "code": "println!(\"{}\", \"42\\n\".parse::<u32>().is_ok());",
+   "teaser": "¿Qué trae read_line al final?",
+   "explanation": "read_line deja el salto de línea en el texto, y \"42\\n\" no es un número válido: parse devuelve Err. Por eso se hace trim() antes de parse().",
+   "kind": "choice",
+   "options": [
+    "Panic",
+    "true",
+    "false"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "read-line",
+   "topic": "Entrada y errores",
+   "question": "Escribes 10 + Enter y luego 50 + Enter. ¿Qué contiene s?",
+   "code": "let mut s = String::new();\nio::stdin().read_line(&mut s).expect(\"fallo\");\nio::stdin().read_line(&mut s).expect(\"fallo\");",
+   "teaser": "¿read_line borra lo anterior?",
+   "explanation": "read_line AGREGA al final del String, no lo reemplaza. Por eso un String declarado fuera del loop acumula \"10\\n50\\n\" y parse falla para siempre. Declara dentro del loop o usa clear().",
+   "kind": "choice",
+   "options": [
+    "\"50\"",
+    "\"10\\n50\\n\"",
+    "\"50\\n\""
+   ],
+   "answer": 1
+  },
+  {
+   "id": "parse-match",
+   "topic": "Entrada y errores",
+   "question": "Si el usuario escribe texto, pide otra jugada sin salir del bucle. Complétalo.",
+   "code": "let n: u32 = match intento.trim().___() {\n    Ok(n) => n,\n    Err(_) => ___,\n};",
+   "teaser": "¿Y si escriben abc?",
+   "explanation": "parse devuelve un Result y match decide qué hacer con Err. continue vuelve a pedir la jugada; break saldría del juego y unwrap haría panic.",
+   "kind": "fill",
+   "bank": [
+    "continue",
+    "break",
+    "parse",
+    "unwrap"
+   ],
+   "blanks": [
+    "parse",
+    "continue"
+   ]
+  },
+  {
+   "id": "unwrap-panic",
+   "topic": "Entrada y errores",
+   "question": "¿Qué pasa al ejecutar?",
+   "code": "let n: u32 = \"abc\".parse().unwrap();",
+   "teaser": "¿Y si unwrap se equivoca?",
+   "explanation": "unwrap sobre datos externos es bandera roja: la entrada basura tumba el programa. Se reemplaza por un match sobre el Result o por ?.",
+   "kind": "choice",
+   "options": [
+    "Hace panic con ParseIntError",
+    "No compila",
+    "n vale 0"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "input-order",
+   "topic": "Entrada y errores",
+   "question": "Ordena la lectura de una jugada, de crear el String a usarla.",
+   "code": "",
+   "teaser": "Ordena la lectura",
+   "explanation": "Primero el String mutable, luego read_line lo rellena (por eso &mut), después trim + parse lo convierten en número y por último se usa.",
+   "kind": "order",
+   "lines": [
+    "let n: u32 = intento.trim().parse().expect(\"número\");",
+    "println!(\"Elegiste {n}\");",
+    "let mut intento = String::new();",
+    "io::stdin().read_line(&mut intento).expect(\"fallo al leer\");"
+   ],
+   "solution": [
+    2,
+    3,
+    0,
+    1
+   ]
+  },
+  {
+   "id": "question-fill",
+   "topic": "Entrada y errores · Result",
+   "question": "Propaga el error al llamador sin hacer panic. Completa.",
+   "code": "fn leer(s: &str) -> Result<u32, std::num::ParseIntError> {\n    let n = s.trim().parse::<u32>()___;\n    Ok(n + 1)\n}",
+   "teaser": "¿Hay una forma corta de propagar?",
+   "explanation": "El operador ? devuelve el Err al llamador y, si es Ok, extrae el valor y sigue. unwrap haría panic y ok() convertiría el Result en Option.",
+   "kind": "fill",
+   "bank": [
+    ".unwrap()",
+    "?",
+    "!",
+    ".ok()"
+   ],
+   "blanks": [
+    "?"
+   ]
+  },
+  {
+   "id": "result-order",
+   "topic": "Entrada y errores · Result",
+   "question": "Ordena la función que propaga el error con ?.",
+   "code": "",
+   "teaser": "Ordena la función",
+   "explanation": "Firma, la línea con ? que extrae el número o devuelve el error, el Ok(n) final como expresión sin ; y la llave de cierre.",
+   "kind": "order",
+   "lines": [
+    "    Ok(n)",
+    "    let n = s.trim().parse::<u32>()?;",
+    "}",
+    "fn leer(s: &str) -> Result<u32, std::num::ParseIntError> {"
+   ],
+   "solution": [
+    3,
+    1,
+    0,
+    2
+   ]
+  },
+  {
+   "id": "test-float",
+   "topic": "Tests",
+   "question": "¿Qué resultado da este test?",
+   "code": "#[test]\nfn suma_decimales() {\n    assert_eq!(0.1 + 0.2, 0.3);\n}",
+   "teaser": "¿Son iguales dos decimales?",
+   "explanation": "En coma flotante 0.1 + 0.2 da 0.30000000000000004. Con f64 se compara con tolerancia: assert!((a - b).abs() < 1e-9).",
+   "kind": "choice",
+   "options": [
+    "No compila",
+    "Pasa",
+    "Falla: los f64 no son exactos"
+   ],
+   "answer": 2
+  },
+  {
+   "id": "test-fill",
+   "topic": "Tests",
+   "question": "Completa el módulo de tests.",
+   "code": "#[cfg(test)]\nmod tests {\n    use ___::*;\n\n    #[test]\n    fn suma_dos() {\n        ___!(sumar(2, 2), 4);\n    }\n}",
+   "teaser": "¿Cómo se prueba una función?",
+   "explanation": "`use super::*` trae al módulo de tests lo definido arriba; assert_eq!(izq, der) compara y muestra ambos valores si falla. #[cfg(test)] hace que solo se compile al correr cargo test.",
+   "kind": "fill",
+   "bank": [
+    "self",
+    "assert_eq",
+    "super",
+    "assert"
+   ],
+   "blanks": [
+    "super",
+    "assert_eq"
+   ]
+  },
+  {
+   "id": "test-order",
+   "topic": "Tests",
+   "question": "Ordena el módulo de tests (el use va primero dentro del módulo).",
+   "code": "",
+   "teaser": "Ordena los tests",
+   "explanation": "#[cfg(test)] marca el módulo, use super::* importa lo de arriba, #[test] va pegado a la función y assert_eq! comprueba. Las llaves cierran de dentro hacia afuera.",
+   "kind": "order",
+   "lines": [
+    "    #[test]",
+    "}",
+    "#[cfg(test)]",
+    "    fn suma_dos() {",
+    "        assert_eq!(sumar(2, 2), 4);",
+    "    }",
+    "mod tests {",
+    "    use super::*;"
+   ],
+   "solution": [
+    2,
+    6,
+    7,
+    0,
+    3,
+    4,
+    5,
+    1
+   ]
+  },
+  {
+   "id": "semver",
+   "topic": "Cargo · compilar",
+   "question": "rand = \"0.10.1\" en Cargo.toml: ¿qué versiones admite?",
+   "code": "",
+   "teaser": "¿Qué fija la versión exacta?",
+   "explanation": "Cargo.toml es la lista de la compra: pide versiones compatibles por SemVer. Cargo.lock es el ticket con la versión exacta resuelta y no se edita a mano.",
+   "kind": "choice",
+   "options": [
+    "Desde 0.10.1 hasta antes de 0.11.0",
+    "Cualquier 0.x",
+    "Solo la 0.10.1"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "rustc-cargo",
+   "topic": "Cargo · compilar",
+   "question": "¿Qué diferencia hay entre rustc y cargo?",
+   "code": "",
+   "teaser": "¿Quién llama a quién?",
+   "explanation": "rustc compila un solo archivo. cargo crea proyectos, baja dependencias, compila, testea y formatea; por debajo llama a rustc. En la práctica siempre usas cargo.",
+   "kind": "choice",
+   "options": [
+    "cargo es el compilador y rustc el gestor de paquetes",
+    "rustc compila un archivo; cargo gestiona todo el proyecto y llama a rustc",
+    "Son el mismo programa con dos nombres"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "tauri-reglas",
+   "topic": "Tauri · arquitectura",
+   "question": "¿Dónde viven las reglas del Elo en esta app?",
+   "code": "",
+   "teaser": "¿Quién califica tus respuestas?",
+   "explanation": "La interfaz solo dibuja y manda tu respuesta con invoke; el core Rust califica, mueve el Elo y guarda en SQLite. Así la misma lógica servirá luego en el móvil.",
+   "kind": "choice",
+   "options": [
+    "En el core Rust, no en la interfaz",
+    "En el JavaScript de la interfaz",
+    "En el CSS"
+   ],
+   "answer": 0
+  },
+  {
+   "id": "tauri-mutex",
+   "topic": "Tauri · arquitectura",
+   "question": "¿Para qué sirve el Mutex en el estado de Tauri?",
+   "code": "struct App(Mutex<Engine>);",
+   "teaser": "¿Dos comandos a la vez?",
+   "explanation": "Tauri puede atender varios comandos a la vez; el Mutex asegura que solo uno toque el motor a la vez. No guarda nada: guardar es trabajo de SQLite.",
+   "kind": "choice",
+   "options": [
+    "Convierte los errores en texto",
+    "Da acceso exclusivo al motor mientras se usa",
+    "Guarda la partida en SQLite"
+   ],
+   "answer": 1
+  },
+  {
+   "id": "tauri-state",
+   "topic": "Tauri · arquitectura",
+   "question": "Registra el estado compartido de la app en Tauri.",
+   "code": "app.___(App(Mutex::new(engine)));",
+   "teaser": "¿Cómo recibe el estado cada comando?",
+   "explanation": "app.manage(...) guarda el estado nativo y tauri::State lo recupera dentro de cada #[tauri::command]. El Mutex da acceso exclusivo mientras se usa.",
+   "kind": "fill",
+   "bank": [
+    "insert",
+    "state",
+    "add",
+    "manage"
+   ],
+   "blanks": [
+    "manage"
+   ]
+  },
+  {
+   "id": "binario-solo",
+   "topic": "Cargo · compilar",
+   "question": "¿Un binario de cargo build --release necesita Rust instalado para ejecutarse?",
+   "code": "",
+   "teaser": "¿Y en la PC de un amigo?",
+   "explanation": "Compilar traduce todo a código máquina. El resultado (un .exe en Windows) corre sin tener Rust instalado, a diferencia de un script de Python que necesita su intérprete.",
+   "kind": "choice",
+   "options": [
+    "Sí: necesita cargo",
+    "Sí: necesita rustc",
+    "No: corre solo en otra máquina del mismo sistema"
+   ],
+   "answer": 2
+  }
+ ],
+ "duels": [
+  {
+   "topic": "Vec · índices",
+   "title": "La IA dice que el stock siempre se puede consultar. ¿Qué entrada rompe su arreglo?",
+   "code": "fn cantidad(stock: &[i32], i: usize) -> i32 {\n    *stock.get(i).unwrap()\n}",
+   "options": [
+    "stock = [8], i = 1",
+    "stock = [8], i = 0",
+    "stock = [8, 12], i = 1"
+   ],
+   "answer": 0,
+   "explanation": "get(1) devuelve None cuando solo hay un elemento. unwrap() entra en pánico con None."
+  },
+  {
+   "topic": "Referencias · &mut",
+   "title": "La IA prometió un descuento de dos unidades. ¿Qué revela el bug?",
+   "code": "fn venta(stock: &mut i32) {\n    *stock -= 1;\n}",
+   "options": [
+    "El código jamás modifica stock.",
+    "Con stock = 5 queda 4.",
+    "Con stock = 5 queda 3."
+   ],
+   "answer": 1,
+   "explanation": "La referencia sí modifica el stock original. El error es descontar una unidad cuando el contrato pide dos."
+  },
+  {
+   "topic": "Vec · mutabilidad",
+   "title": "La IA dice que este arreglo actualiza el inventario original. ¿Qué pasa?",
+   "code": "fn agregar(stock: &mut Vec<i32>) {\n    let mut copia = (*stock).clone();\n    copia.push(3);\n}",
+   "options": [
+    "Se actualiza el inventario original.",
+    "No compila porque copia es mutable.",
+    "Solo se actualiza la copia."
+   ],
+   "answer": 2,
+   "explanation": "clone crea otro vector. push modifica copia, que se descarta al salir."
+  },
+  {
+   "topic": "Tipos · enteros",
+   "title": "La IA asegura que convertir con as es seguro para cualquier cantidad. ¿Qué entrada lo desmiente?",
+   "code": "fn a_byte(n: i32) -> u8 {\n    n as u8\n}",
+   "options": [
+    "a_byte(0) devuelve 0",
+    "a_byte(100) devuelve 100",
+    "a_byte(300) devuelve 44"
+   ],
+   "answer": 2,
+   "explanation": "as se queda con los 8 bits bajos sin avisar: 300 pasa a ser 44. Para detectar la pérdida existe u8::try_from."
+  },
+  {
+   "topic": "Tipos · overflow",
+   "title": "La IA dice que su promedio funciona con cualquier lista de notas. ¿Qué entrada lo rompe?",
+   "code": "fn promedio(v: &[u8]) -> f64 {\n    let s: u8 = v.iter().sum();\n    s as f64 / v.len() as f64\n}",
+   "options": [
+    "promedio(&[200, 100])",
+    "promedio(&[1, 2, 3])",
+    "promedio(&[0])"
+   ],
+   "answer": 0,
+   "explanation": "La suma se acumula en u8: 200 + 100 = 300 no cabe. En debug entra en pánico y en release envuelve a 44, dando un promedio falso. Hay que ensanchar a u32 antes de sumar."
+  },
+  {
+   "topic": "Entrada y errores",
+   "title": "La IA dice que ya manejó la entrada inválida. ¿Qué escribe el usuario para tumbar el programa?",
+   "code": "let n: u32 = intento.trim().parse().expect(\"número\");",
+   "options": [
+    "42",
+    "abc",
+    "  7  "
+   ],
+   "answer": 1,
+   "explanation": "parse falla con abc y expect convierte ese Err en panic. Con 42 o \"  7  \" (trim quita los espacios) funciona."
+  },
+  {
+   "topic": "Control de flujo",
+   "title": "La IA asegura que suma todos los elementos. ¿Qué entrada la delata?",
+   "code": "fn suma(arr: &[i32]) -> i32 {\n    let mut total = 0;\n    for i in 0..arr.len() - 1 {\n        total += arr[i];\n    }\n    total\n}",
+   "options": [
+    "suma(&[1, 2, 3, 4, 5]) devuelve 15",
+    "suma(&[]) devuelve 0",
+    "suma(&[1, 2, 3, 4, 5]) devuelve 10"
+   ],
+   "answer": 2,
+   "explanation": "El rango 0..len - 1 se queda corto y se pierde el último elemento. Además, con un slice vacío len() - 1 desborda usize y entra en pánico. Lo idiomático es for x in arr."
+  },
+  {
+   "topic": "Tests",
+   "title": "La IA dice que su test cubre la función. ¿Qué entrada lo engaña?",
+   "code": "fn es_impar(n: i32) -> bool {\n    n % 2 == 1\n}\n\n#[test]\nfn impar() {\n    assert!(es_impar(3));\n}",
+   "options": [
+    "es_impar(4)",
+    "es_impar(-3)",
+    "es_impar(3)"
+   ],
+   "answer": 1,
+   "explanation": "En Rust -3 % 2 vale -1, no 1, así que es_impar(-3) da false. Un buen set de tests tiene caso normal, de borde y de trampa."
+  }
+ ]
+}

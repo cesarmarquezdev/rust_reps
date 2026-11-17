@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rust Reps</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="reader.css">
+</head>
+<body>
+<main>
+<header>
+  <div class="brand"><span class="mark" aria-hidden="true">R</span>Rust Reps</div>
+  <div class="actions"><button class="plain" id="booksBtn">Libros</button><button class="plain" id="sound" aria-pressed="false">Sonido</button><button class="plain" id="finish" hidden>Terminar ronda</button></div>
+</header>
+<div class="stats">
+  <div class="stat"><small>Elo</small><strong id="elo">—</strong><small id="rank"></small></div>
+  <div class="stat"><small>Cronómetro</small><strong id="timer">00:00</strong></div>
+</div>
+<div class="track" id="track" hidden><div id="bar"></div></div>
+<p id="err" role="alert" hidden></p>
+
+<article id="intro">
+  <div class="hero"><div class="meta">Tarjetas de Rust</div><h1>Predice, completa y ordena</h1></div>
+  <div class="body">
+    <p>Rondas de cinco tarjetas: predice qué hará el código, completa los huecos y ordena las líneas. Cada ronda cuesta <strong>50 Elo</strong>. Si fallas, la tarjeta vuelve para una repesca. Puedes acabar la ronda con saldo negativo.</p>
+    <p class="sub" id="rankLine"></p>
+    <dl id="homeStats"></dl>
+    <button class="primary" id="start">Empezar ronda</button>
+  </div>
+</article>
+
+<article id="card" hidden>
+  <div class="hero">
+    <div class="meta"><span class="tag" id="topic"></span><span id="combo" hidden></span><span id="position"></span></div>
+    <h1 id="question" tabindex="-1"></h1>
+    <pre id="code"></pre>
+  </div>
+  <div class="body">
+    <div id="options"></div>
+    <div id="flip" hidden>
+      <button class="primary" id="reveal">Mostrar respuesta</button>
+      <p id="back" hidden></p>
+      <div id="self" hidden><button class="option" id="no"><span>✗</span>No lo sabía</button><button class="option" id="yes"><span>✓</span>Lo sabía</button></div>
+    </div>
+    <div id="builder" hidden>
+      <p class="sub" id="builderHint"></p>
+      <div id="picked"></div>
+      <div id="bank"></div>
+    </div>
+    <button class="primary" id="check" hidden>Comprobar</button>
+    <div id="feedback" role="status" hidden></div>
+    <button class="primary" id="next" hidden>Siguiente tarjeta →</button>
+  </div>
+</article>
+
+<article id="result" class="summary" hidden>
+  <div class="meta">Resultados</div><h1 id="done" tabindex="-1">Ronda terminada</h1>
+  <p id="balance" role="status"></p>
+  <dl id="resultStats"></dl>
+  <button id="again" class="primary">Jugar otra ronda</button>
+  <button id="duelOpen" class="primary" hidden>Investigar el bug sorpresa →</button>
+</article>
+
+<article id="duel" hidden>
+  <div class="hero"><div class="meta">Duelo contra la IA · Sin costo</div><h1 id="duelTitle" tabindex="-1"></h1><pre id="duelCode"></pre></div>
+  <div class="body"><div id="duelOptions"></div><p id="duelFeedback" role="status"></p><button id="duelBack" class="plain">Volver a resultados</button></div>
+</article>
+
+<p id="rules" class="sub">Entrada −50 · Acierto +20 · Error −12 · Acierto en repesca +8</p>
+</main>
+<section id="reader" hidden data-theme="calm" data-font="serif">
+  <div id="library">
+    <div class="rtop"><strong>Libros</strong><button class="rbtn" id="libClose" aria-label="Cerrar">✕</button></div>
+    <div id="shelf"></div>
+  </div>
+  <div id="book" hidden>
+    <div id="scroller"><div id="text"></div></div>
+    <div class="rtop" id="rtop"><button class="pill" id="backPos" hidden></button><span id="bookTitle"></span><button class="rbtn" id="bookClose" aria-label="Cerrar libro">✕</button></div>
+    <div class="rbot" id="rbot"><span id="pct"></span><button class="rbtn" id="menuBtn" aria-label="Menú del libro">☰</button></div>
+    <div id="scrim" hidden></div>
+    <div id="menu" hidden>
+      <button id="mContents">Contenido<span>☰</span></button>
+      <button id="mSearch">Buscar en el libro<span>⌕</span></button>
+      <button id="mThemes">Temas y ajustes<span>Aa</span></button>
+    </div>
+    <div id="sheet" hidden><div class="shead"><strong id="sheetTitle"></strong><button class="rbtn" id="sheetClose" aria-label="Cerrar">✕</button></div><div id="sheetBody"></div></div>
+  </div>
+  <button id="mkCard" hidden>＋ Tarjeta</button>
+  <div id="cardForm" hidden>
+    <div class="panel">
+      <div class="shead"><strong>Nueva tarjeta</strong><span id="fTopic"></span></div>
+      <label for="fq">Pregunta</label><textarea id="fq" rows="3" maxlength="2000"></textarea>
+      <label for="fa">Respuesta</label><textarea id="fa" rows="4" maxlength="4000"></textarea>
+      <p id="fErr" role="alert" hidden></p>
+      <div class="frow"><button class="plain" id="fSwap">⇅ Intercambiar</button><span></span><button class="plain" id="fCancel">Cancelar</button><button class="primary" id="fSave">Guardar</button></div>
+    </div>
+  </div>
+  <div id="toast" role="status" hidden></div>
+</section>
+<script src="app.js"></script>
+<script src="books/rust.js"></script>
+<script src="books/python.js"></script>
+<script src="books/algoritmos.js"></script>
+<script src="books/datos.js"></script>
+<script src="books/web.js"></script>
+<script src="books/testing.js"></script>
+<script src="books/cpp.js"></script>
+<script src="books/metodo.js"></script>
+<script src="reader.js"></script>
+</body>
+</html>
