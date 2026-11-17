@@ -1,4 +1,0 @@
-# Reutiliza las dependencias de Tauri ya compiladas en ascension (evita otros ~6 GB de target/).
-# ponytail: si ascension se borra, quita esta línea y cargo usará ./target.
-[build]
-target-dir = "../rust_learn/ascension/target"

@@ -9,6 +9,23 @@ Tres modalidades: **predice** (elige), **completa** el código (huecos) y **orde
 `dist/RustReps.exe` (portable, Windows con WebView2). Tu progreso queda en
 `%LOCALAPPDATA%\local.rustreps.app\reps.sqlite3`.
 
+## Compilar desde el código
+
+El `.exe` no está en el repo; se compila así (Windows):
+
+1. Instala [Rust](https://rustup.rs) y, cuando lo pida, las *Build Tools de Visual Studio* (C++).
+2. WebView2 ya viene en Windows 10/11.
+3. Clona y compila (la primera vez tarda varios minutos y baja ~6 GB de dependencias a `target/`):
+
+```powershell
+git clone https://github.com/cesarmarquezdev/rust_reps.git
+cd rust_reps
+cargo run -p rust-reps --release
+```
+
+El ejecutable queda en `target\release\rust-reps.exe`. Para correr los tests: `cargo test -p reps-core`.
+No hace falta Node ni la CLI de Tauri: la UI (`ui/`) es HTML/JS estático.
+
 ## Libros (lector)
 
 Botón **Libros**: lector con scroll continuo estilo Apple Books (temas, tamaño y tipo de letra, contenido, búsqueda, posición guardada). Los 8 libros (Rust, Python, Algoritmos, Datos y APIs, JavaScript y React, Testing, C++, Método y arquitectura) son archivos en `ui/books/*.js`, generados con `node _conocimiento/books.cjs` desde `_conocimiento/CONOCIMIENTO.md` (cada sección es un capítulo; los 728 conceptos están). Selecciona texto y toca **＋ Tarjeta**, o abre una pregunta y toca **Crear tarjeta**: se guarda en SQLite (`user_cards`) como tarjeta *voltear* ("lo sabía / no lo sabía"), sale primero en las rondas y usa el mismo Elo y repaso espaciado.
@@ -59,8 +76,7 @@ cargo clippy --workspace --all-targets --offline -- -D warnings
 cargo build -p rust-reps --release --offline
 ```
 
-`.cargo/config.toml` comparte el `target/` de `ascension` para no duplicar ~6 GB de dependencias de Tauri.
-Si algún día borras `ascension/target`, quita esa línea y cargo usará `./target`.
+`--offline` solo funciona si ya tienes las dependencias descargadas; en un clon nuevo quítalo.
 Para probar sin tocar tu progreso: `REPS_DATA_DIR=<carpeta>`.
 
 ## Límites conocidos
