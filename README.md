@@ -6,7 +6,8 @@ Tres modalidades: **predice** (elige), **completa** el código (huecos) y **orde
 
 ## Jugar
 
-`dist/RustReps.exe` (portable, Windows con WebView2). Tu progreso queda en
+Descarga `RustReps.exe` de [Releases](https://github.com/cesarmarquezdev/rust_reps/releases/latest) y ábrelo:
+es portable (Windows 10/11, sin instalar nada). Tu progreso queda en
 `%LOCALAPPDATA%\local.rustreps.app\reps.sqlite3`.
 
 ## Compilar desde el código
